@@ -232,8 +232,6 @@ vim.keymap.set('n', '<space>st', function()
   vim.cmd.term()
   vim.cmd.wincmd 'J'
   vim.api.nvim_win_set_height(0, 20)
-
-  job_id = vim.bo.channel
 end, { desc = 'Open a small terminal at the bottom' })
 
 -- vim.api.nvim_create_autocmd('FileType', {
@@ -257,7 +255,6 @@ vim.g.blamer_enabled = 1
 vim.g.blamer_delay = 500
 
 -- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -634,8 +631,8 @@ require('lazy').setup({
       --  See `:help lsp-config` for information about keys and how to configure
       local servers = {
         -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        gopls = {},
+        pyright = {},
         ['rust-analyzer'] = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -805,11 +802,12 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        menu = { auto_show = true },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets' },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
 
       snippets = { preset = 'luasnip' },
@@ -1003,8 +1001,20 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'rust',
   callback = function()
     vim.keymap.set('n', '<leader>cr', function() require('custom.floaterminal').send 'cargo run' end, { buffer = true, desc = 'Cargo Run (Float)' })
+
+    vim.opt_local.colorcolumn = '100'
+    vim.api.nvim_set_hl(0, 'ColorColumn', {
+      bg = '#2a2a2a', -- change to whatever fits your theme
+    })
   end,
 })
+
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.indentexpr = 'nvim_treesitter#indent()'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
