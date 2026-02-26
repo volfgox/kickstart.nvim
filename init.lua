@@ -171,6 +171,13 @@ vim.o.confirm = true
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- expanding tabs to space
+
+vim.o.expandtab = true
+vim.o.softtabstop = 2
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
 vim.diagnostic.config {
@@ -245,6 +252,9 @@ end, { desc = 'Reload current file' })
 -- Toggle neo-tree
 vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'Toggle Neo-tree' })
 vim.keymap.set('n', '<leader>o', '<cmd>Neotree reveal<CR>', { desc = 'Reveal in Neo-tree' })
+
+vim.g.blamer_enabled = 1
+vim.g.blamer_delay = 500
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -950,6 +960,8 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'plugins.blamer',
+  require 'plugins.git-messenger',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
